@@ -190,15 +190,31 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry, PrintConsole *curConsole)
 	//pstart = centerpos(32, );
 	printf("%s\n\n", (commentvalid ? ZitatEntry->comment : ""));
 
-	//printf("%s%s\n%s\n\n", ZitatEntry->author, (setcomma ? "," : ""), (commentvalid ? ZitatEntry->comment : ""));
-	
 	if (yearvalid) {
+		bool monthvalid = false;
+		bool dayvalid = false;
+		int datelen = 1;
+		uint16_t tmp = ZitatEntry->year;
+
+		while ((tmp /= 10) > 0)
+			datelen++;
+
 		if (ZitatEntry->month != 0) {
-			if (ZitatEntry->day != 0)
-				printf("%s%d.", (ZitatEntry->day > 9 ? "" : "0"), ZitatEntry->day);
-			printf("%s%d.", (ZitatEntry->month > 9 ? "" : "0"), ZitatEntry->month);
+			monthvalid = true;
+			datelen += 3;
+			if (ZitatEntry->day != 0) {
+				dayvalid = true;
+				datelen += 3;
+			}
 		}
-		printf("%d", ZitatEntry->year);
-		printf("\n");
+
+		pstart = centerpos(32, datelen);
+		printf("\x1b[%d;%dH", curConsole->cursorY, pstart);
+
+		if (dayvalid)
+			printf("%s%d.", (ZitatEntry->day > 9 ? "" : "0"), ZitatEntry->day);
+		if (monthvalid)
+			printf("%s%d.", (ZitatEntry->month > 9 ? "" : "0"), ZitatEntry->month);
+		printf("%d\n", ZitatEntry->year);
 	}
 }
