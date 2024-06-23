@@ -22,6 +22,9 @@
 
 /* definitions */
 #define FILENAME_JSON	"zitate.json"
+#define HELP_RIGHT		"> --> next Zitat"
+#define HELP_LEFT		"< --> previous Zitat"
+#define HELP_START		"START --> Exit"
 
 
 /* macros */
@@ -103,11 +106,16 @@ int main(int argc, char **argv)
 
 
 	/* 5. fill sub display with controls */
-	// work first, then alignment
+	// aligning the button infos makes it more appealing, imo
+	// also, we center Y, roughly
 	consoleSelect(&bottomScreen);
-	printf("> --> next Zitat\n");
-	printf("< --> previous Zitat\n");
-	printf("START --> Exit\n");
+	uint8_t pstart = centerpos(32, strlen(HELP_LEFT));
+	printf("\x1b[%d;%dH", 10, pstart);
+	printf("%s\n", HELP_RIGHT);
+	printf("\x1b[%d;%dH", bottomScreen.cursorY, pstart);
+	printf("%s\n", HELP_LEFT);
+	printf("\x1b[%d;%dH", bottomScreen.cursorY + 1, pstart);
+	printf("%s\n", HELP_START);
 
 
 	/* 6. fill top display with initial entry */
