@@ -177,6 +177,11 @@ static inline void waitforstartexit(int retcode)
 
 static void printZitat(ZitatespuckerZitat *ZitatEntry, PrintConsole *curConsole)
 {
+	// TODO:
+	// NULL-check both zitat and author
+	// center zitat
+	// fix centering issues on comment
+	
 	uint8_t pstart;
 	
 	printf("%s\n\n", ZitatEntry->zitat);
