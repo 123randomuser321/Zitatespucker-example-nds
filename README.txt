@@ -28,3 +28,8 @@ This frontend also does not automatically truncate anything (aka is just keeps p
 so bear that in mind, too.
 
 The filename to look up is hardcoded, but you probably expected that (hint: 'zitate.json').
+
+
+## other notes
+
+The file 'logo.xcf' is for GIMP. It doesn't really serve any purpose, but exists for posterity.
