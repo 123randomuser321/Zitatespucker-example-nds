@@ -26,6 +26,15 @@
 #define FILENAME_JSON	"zitate.json"
 
 
+/* macros */
+
+/*
+	macro to get the position at which to start printing, so that the output is centered
+	X is the length of the line to print into, L is the line to be printed
+*/
+#define centerpos(X, L)		(((X) - (L) - (((X) - (L)) % 2)) / 2)
+
+
 /* BlocksDS stuff */
 #ifndef ARM9
 #define ARM9
@@ -44,7 +53,7 @@ static inline void waitforstart(void);
 
 static inline void waitforstartexit(int retcode);
 
-static void printZitat(ZitatespuckerZitat *ZitatEntry);
+static void printZitat(ZitatespuckerZitat *ZitatEntry, PrintConsole *curConsole);
 
 
 int main(int argc, char **argv)
@@ -105,7 +114,7 @@ int main(int argc, char **argv)
 
 	/* 6. fill top display with initial entry */
 	consoleSelect(&topScreen);
-	printZitat(ZitatList);
+	printZitat(ZitatList, &topScreen);
 
 
 	/* 7. enter key-getting loop */
@@ -123,13 +132,13 @@ int main(int argc, char **argv)
 			if (cur->prevZitat != NULL) {
 				cur = cur->prevZitat;
 				consoleClear();
-				printZitat(cur);
+				printZitat(cur, &topScreen);
 			}
 		} else if (keys & KEY_RIGHT) {
 			if (cur->nextZitat != NULL) {
 				cur = cur->nextZitat;
 				consoleClear();
-				printZitat(cur);
+				printZitat(cur, &topScreen);
 			}
 		}
 	}
@@ -163,13 +172,26 @@ static inline void waitforstartexit(int retcode)
 	exit(retcode);
 }
 
-static void printZitat(ZitatespuckerZitat *ZitatEntry)
+static void printZitat(ZitatespuckerZitat *ZitatEntry, PrintConsole *curConsole)
 {
+	uint8_t pstart;
+	
 	printf("%s\n\n", ZitatEntry->zitat);
 	bool yearvalid = ((ZitatEntry->year != 0 || ZitatEntry->annodomini == true));
 	bool commentvalid = (ZitatEntry->comment != NULL);
 	bool setcomma = (yearvalid || commentvalid);
-	printf("%s%s\n%s\n\n", ZitatEntry->author, (setcomma ? "," : ""), (commentvalid ? ZitatEntry->comment : ""));
+	
+	pstart = centerpos(32, strlen(ZitatEntry->author) + setcomma);
+	if (pstart < 0) { pstart = 0; }
+	// Set cursor coordinates: [y;xH
+    printf("\x1b[%d;%dH", curConsole->cursorY, pstart);
+	printf("%s%s\n", ZitatEntry->author, (setcomma ? "," : ""));
+
+	//pstart = centerpos(32, );
+	printf("%s\n\n", (commentvalid ? ZitatEntry->comment : ""));
+
+	//printf("%s%s\n%s\n\n", ZitatEntry->author, (setcomma ? "," : ""), (commentvalid ? ZitatEntry->comment : ""));
+	
 	if (yearvalid) {
 		if (ZitatEntry->month != 0) {
 			if (ZitatEntry->day != 0)
