@@ -164,7 +164,7 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry)
 	bool yearvalid = ((ZitatEntry->year != 0 || ZitatEntry->annodomini == true));
 	bool commentvalid = (ZitatEntry->comment != NULL);
 	bool setcomma = (yearvalid || commentvalid);
-	printf("%s%s\n%s\n", ZitatEntry->author, (setcomma ? "," : ""), (commentvalid ? ZitatEntry->comment : ""));
+	printf("%s%s\n%s\n\n", ZitatEntry->author, (setcomma ? "," : ""), (commentvalid ? ZitatEntry->comment : ""));
 	if (yearvalid) {
 		if (ZitatEntry->month != 0) {
 			if (ZitatEntry->day != 0)
