@@ -166,13 +166,12 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry)
 	bool setcomma = (yearvalid || commentvalid);
 	printf("%s%s\n%s\n", ZitatEntry->author, (setcomma ? "," : ""), (commentvalid ? ZitatEntry->comment : ""));
 	if (yearvalid) {
-		printf("%d", ZitatEntry->year);
 		if (ZitatEntry->month != 0) {
-			printf(".%s%d", (ZitatEntry->month > 9 ? "" : "0"), ZitatEntry->month);
 			if (ZitatEntry->day != 0)
-				printf(".%s%d", (ZitatEntry->day > 9 ? "" : "0"), ZitatEntry->day);
-			
+				printf("%s%d.", (ZitatEntry->day > 9 ? "" : "0"), ZitatEntry->day);
+			printf("%s%d.", (ZitatEntry->month > 9 ? "" : "0"), ZitatEntry->month);
 		}
+		printf("%d", ZitatEntry->year);
 		printf("\n");
 	}
 }
