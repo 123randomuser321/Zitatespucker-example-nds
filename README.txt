@@ -19,7 +19,7 @@ Then, hit 'make'.
 
 ## Limitations
 
-There are lot.
+There are a lot.
 
 Either I did not comprehend it well, or the NDS console output only understands ASCII.
 So, go set up your 'zitate.json' accordingly.
