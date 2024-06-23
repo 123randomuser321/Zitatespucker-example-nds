@@ -188,7 +188,28 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry, PrintConsole *curConsole)
 	printf("%s%s\n", ZitatEntry->author, (setcomma ? "," : ""));
 
 	//pstart = centerpos(32, );
-	printf("%s\n\n", (commentvalid ? ZitatEntry->comment : ""));
+	//printf("%s\n\n", (commentvalid ? ZitatEntry->comment : ""));
+
+	if (commentvalid) {
+		size_t commentlen = strlen(ZitatEntry->comment);
+		if (commentlen > 32) {
+			char *cur = ZitatEntry->comment;
+			do {
+				printf("%.32s\n", cur);
+				cur += 32;
+			} while ((commentlen = strlen(cur)) > 32);
+			if (commentlen > 0) {
+				pstart = centerpos(32, commentlen);
+				printf("\x1b[%d;%dH", curConsole->cursorY, pstart);
+				printf("%s", cur);
+			}
+		} else {
+			pstart = centerpos(32, commentlen);
+			printf("\x1b[%d;%dH", curConsole->cursorY, pstart);
+			printf("%s", ZitatEntry->comment);
+		}
+	}
+	printf("\n\n");
 
 	if (yearvalid) {
 		bool monthvalid = false;
