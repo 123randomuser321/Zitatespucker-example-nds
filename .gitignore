@@ -1,0 +1,4 @@
+.vscode/
+nitrofs/Zitatespucker/zitate.json
+build/
+*.nds
