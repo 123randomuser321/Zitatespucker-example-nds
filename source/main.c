@@ -16,8 +16,6 @@
 	NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
 /*
-	TODO:
-	Could use console windows maybe, for centering etc.
 	X = 32, Y = 24
 */
 
@@ -151,9 +149,6 @@ int main(int argc, char **argv)
 
 	consoleSelect(&topScreen);
 	consoleClear();
-
-	//printf("Goodbye :)");
-	//waitforstartexit(0);
 }
 
 
@@ -186,9 +181,6 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry, PrintConsole *curConsole)
 	// Set cursor coordinates: [y;xH
     printf("\x1b[%d;%dH", curConsole->cursorY, pstart);
 	printf("%s%s\n", ZitatEntry->author, (setcomma ? "," : ""));
-
-	//pstart = centerpos(32, );
-	//printf("%s\n\n", (commentvalid ? ZitatEntry->comment : ""));
 
 	if (commentvalid) {
 		size_t commentlen = strlen(ZitatEntry->comment);
