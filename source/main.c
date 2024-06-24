@@ -206,13 +206,11 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry, int *cursorY)
 				cur += 32;
 			} while ((commentlen = strlen(cur)) > 32);
 			if (commentlen > 0) {
-				pstart = centerpos(32, commentlen);
-				printf("\x1b[%d;%dH", *cursorY, pstart);
+				printf("\x1b[%d;%dH", *cursorY, centerpos(32, commentlen));
 				printf("%s", cur);
 			}
 		} else {
-			pstart = centerpos(32, commentlen);
-			printf("\x1b[%d;%dH", *cursorY, pstart);
+			printf("\x1b[%d;%dH", *cursorY, centerpos(32, commentlen));
 			printf("%s", ZitatEntry->comment);
 		}
 	}
@@ -236,8 +234,7 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry, int *cursorY)
 			}
 		}
 
-		pstart = centerpos(32, datelen);
-		printf("\x1b[%d;%dH", *cursorY, pstart);
+		printf("\x1b[%d;%dH", *cursorY, centerpos(32, datelen));
 
 		if (dayvalid)
 			printf("%s%d.", (ZitatEntry->day > 9 ? "" : "0"), ZitatEntry->day);
