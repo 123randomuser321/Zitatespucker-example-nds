@@ -58,6 +58,8 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry, int *cursorY);
 
 static size_t strlentilnew(char *str);
 
+static void printCenteredLines(char *str, int *cursorY);
+
 
 int main(int argc, char **argv)
 {
@@ -183,33 +185,9 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry, int *cursorY)
 	// Set cursor coordinates: [y;xH
 	
 	uint8_t pstart;
-	
-	/*
-	if (ZitatEntry->zitat != NULL)
-		printf("%s\n\n", ZitatEntry->zitat);
-	*/
 
 	if (ZitatEntry->zitat != NULL) {
-		char *cur = ZitatEntry->zitat;
-		size_t tilnew = strlentilnew(cur);
-		if (tilnew > 32)
-			tilnew = 32;
-
-		for (int i = *cursorY; *cur != '\0'; i++) {
-			printf("\x1b[%d;%dH", i, centerpos(32, tilnew));
-			fwrite(cur, sizeof(char), tilnew, stdout);
-			cur += tilnew;
-			if (*cur == '\0')
-				break;
-			else {
-				if (*cur == '\n')
-					cur++;
-				tilnew = strlentilnew(cur);
-				if (tilnew > 32)
-					tilnew = 32;
-			}
-		}
-		
+		printCenteredLines(ZitatEntry->zitat, cursorY);
 		printf("\n\n");
 	}
 
@@ -281,4 +259,27 @@ static size_t strlentilnew(char *str)
 	}
 
 	return ret;
+}
+
+static void printCenteredLines(char *str, int *cursorY)
+{
+	char *cur = str;
+	size_t tilnew = strlentilnew(cur);
+	if (tilnew > 32)
+		tilnew = 32;
+
+	for (int i = *cursorY; *cur != '\0'; i++) {
+		printf("\x1b[%d;%dH", i, centerpos(32, tilnew));
+		fwrite(cur, sizeof(char), tilnew, stdout);
+		cur += tilnew;
+		if (*cur == '\0')
+			break;
+		else {
+			if (*cur == '\n')
+				cur++;
+			tilnew = strlentilnew(cur);
+			if (tilnew > 32)
+				tilnew = 32;
+		}
+	}
 }
