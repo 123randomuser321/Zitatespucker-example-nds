@@ -54,7 +54,7 @@ static inline void waitforstart(void);
 
 static inline void waitforstartexit(int retcode);
 
-static void printZitat(ZitatespuckerZitat *ZitatEntry, PrintConsole *curConsole);
+static void printZitat(ZitatespuckerZitat *ZitatEntry, int *cursorY);
 
 
 int main(int argc, char **argv)
@@ -121,7 +121,7 @@ int main(int argc, char **argv)
 
 	/* 5. fill top display with initial entry */
 	consoleSelect(&topScreen);
-	printZitat(ZitatList, &topScreen);
+	printZitat(ZitatList, &(topScreen.cursorY));
 
 
 	/* 6. enter key-getting loop */
@@ -139,13 +139,13 @@ int main(int argc, char **argv)
 			if (cur->prevZitat != NULL) {
 				cur = cur->prevZitat;
 				consoleClear();
-				printZitat(cur, &topScreen);
+				printZitat(cur, &(topScreen.cursorY));
 			}
 		} else if (keys & KEY_RIGHT) {
 			if (cur->nextZitat != NULL) {
 				cur = cur->nextZitat;
 				consoleClear();
-				printZitat(cur, &topScreen);
+				printZitat(cur, &(topScreen.cursorY));
 			}
 		}
 	}
@@ -176,7 +176,7 @@ static inline void waitforstartexit(int retcode)
 	exit(retcode);
 }
 
-static void printZitat(ZitatespuckerZitat *ZitatEntry, PrintConsole *curConsole)
+static void printZitat(ZitatespuckerZitat *ZitatEntry, int *cursorY)
 {
 	// TODO:
 	// center zitat
@@ -193,7 +193,7 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry, PrintConsole *curConsole)
 		pstart = centerpos(32, strlen(ZitatEntry->author) + setcomma);
 		if (pstart < 0) { pstart = 0; }
 		// Set cursor coordinates: [y;xH
-    	printf("\x1b[%d;%dH", curConsole->cursorY, pstart);
+    	printf("\x1b[%d;%dH", *cursorY, pstart);
 		printf("%s%s\n", ZitatEntry->author, (setcomma ? "," : ""));
 	}
 
@@ -207,12 +207,12 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry, PrintConsole *curConsole)
 			} while ((commentlen = strlen(cur)) > 32);
 			if (commentlen > 0) {
 				pstart = centerpos(32, commentlen);
-				printf("\x1b[%d;%dH", curConsole->cursorY, pstart);
+				printf("\x1b[%d;%dH", *cursorY, pstart);
 				printf("%s", cur);
 			}
 		} else {
 			pstart = centerpos(32, commentlen);
-			printf("\x1b[%d;%dH", curConsole->cursorY, pstart);
+			printf("\x1b[%d;%dH", *cursorY, pstart);
 			printf("%s", ZitatEntry->comment);
 		}
 	}
@@ -237,7 +237,7 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry, PrintConsole *curConsole)
 		}
 
 		pstart = centerpos(32, datelen);
-		printf("\x1b[%d;%dH", curConsole->cursorY, pstart);
+		printf("\x1b[%d;%dH", *cursorY, pstart);
 
 		if (dayvalid)
 			printf("%s%d.", (ZitatEntry->day > 9 ? "" : "0"), ZitatEntry->day);
