@@ -29,8 +29,10 @@ NITROFSDIR	:= nitrofs
 
 # defines
 ifneq ($(DEBUG),)
-	DEFINES := -D DEBUG=1
+	DEBUGDEF = -D DEBUG=1
 endif
+# no float conversion for printf, we don't use it
+DEFINES	:= -D PICOLIBC_LONG_LONG_PRINTF_SCANF $(DEBUGDEF)
 
 # Libraries
 LIBS	:= -lnds9 -ljansson -lZitatespucker
