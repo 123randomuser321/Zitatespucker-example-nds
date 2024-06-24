@@ -56,6 +56,8 @@ static inline void waitforstartexit(int retcode);
 
 static void printZitat(ZitatespuckerZitat *ZitatEntry, int *cursorY);
 
+static size_t strlentilnew(char *str);
+
 
 int main(int argc, char **argv)
 {
@@ -177,14 +179,40 @@ static inline void waitforstartexit(int retcode)
 }
 
 static void printZitat(ZitatespuckerZitat *ZitatEntry, int *cursorY)
-{
-	// TODO:
-	// center zitat
+{	
+	// Set cursor coordinates: [y;xH
 	
 	uint8_t pstart;
 	
+	/*
 	if (ZitatEntry->zitat != NULL)
 		printf("%s\n\n", ZitatEntry->zitat);
+	*/
+
+	if (ZitatEntry->zitat != NULL) {
+		char *cur = ZitatEntry->zitat;
+		size_t tilnew = strlentilnew(cur);
+		if (tilnew > 32)
+			tilnew = 32;
+
+		for (int i = *cursorY; *cur != '\0'; i++) {
+			printf("\x1b[%d;%dH", i, centerpos(32, tilnew));
+			fwrite(cur, sizeof(char), tilnew, stdout);
+			cur += tilnew;
+			if (*cur == '\0')
+				break;
+			else {
+				if (*cur == '\n')
+					cur++;
+				tilnew = strlentilnew(cur);
+				if (tilnew > 32)
+					tilnew = 32;
+			}
+		}
+		
+		printf("\n\n");
+	}
+
 	bool yearvalid = ((ZitatEntry->year != 0 || ZitatEntry->annodomini == true));
 	bool commentvalid = (ZitatEntry->comment != NULL);
 	bool setcomma = (yearvalid || commentvalid);
@@ -192,7 +220,6 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry, int *cursorY)
 	if (ZitatEntry->author != NULL) {
 		pstart = centerpos(32, strlen(ZitatEntry->author) + setcomma);
 		if (pstart < 0) { pstart = 0; }
-		// Set cursor coordinates: [y;xH
     	printf("\x1b[%d;%dH", *cursorY, pstart);
 		printf("%s%s\n", ZitatEntry->author, (setcomma ? "," : ""));
 	}
@@ -242,4 +269,16 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry, int *cursorY)
 			printf("%s%d.", (ZitatEntry->month > 9 ? "" : "0"), ZitatEntry->month);
 		printf("%d\n", ZitatEntry->year);
 	}
+}
+
+static size_t strlentilnew(char *str)
+{
+	size_t ret = 0;
+
+	while (*str != '\n' && *str != '\0') {
+		str++;
+		ret++;
+	}
+
+	return ret;
 }
