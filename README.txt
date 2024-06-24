@@ -27,6 +27,8 @@ So, go set up your 'zitate.json' accordingly.
 This frontend also does not automatically truncate anything (aka is just keeps printing in the next line),
 so bear that in mind, too.
 
+The 'author' string is not expected to be more than 32 characters long.
+
 The filename to look up is hardcoded, but you probably expected that (hint: 'zitate.json').
 
 
