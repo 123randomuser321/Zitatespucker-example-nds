@@ -59,12 +59,20 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry, PrintConsole *curConsole)
 
 int main(int argc, char **argv)
 {
-	/* 0. Init at least one screen for diagnostic reasons */
+	/* 0. init displays */
 	// tbh, this is mostly copied
 	PrintConsole topScreen;
+	PrintConsole bottomScreen;
+
 	videoSetMode(MODE_0_2D);
+	videoSetModeSub(MODE_0_2D);
+
 	vramSetBankA(VRAM_A_MAIN_BG);
+	vramSetBankC(VRAM_C_SUB_BG);
+
 	consoleInit(&topScreen, 3, BgType_Text4bpp, BgSize_T_256x256, 31, 0, true, true);
+	consoleInit(&bottomScreen, 3, BgType_Text4bpp, BgSize_T_256x256, 31, 0, false, true);
+
 	consoleSelect(&topScreen);
 
 	
@@ -96,16 +104,9 @@ int main(int argc, char **argv)
 	waitforstart();
 	#endif
 	consoleClear();
-	
-
-	/* 4. init the sub display */
-	PrintConsole bottomScreen;
-	videoSetModeSub(MODE_0_2D);
-	vramSetBankC(VRAM_C_SUB_BG);
-	consoleInit(&bottomScreen, 3, BgType_Text4bpp, BgSize_T_256x256, 31, 0, false, true);
 
 
-	/* 5. fill sub display with controls */
+	/* 4. fill sub display with controls */
 	// aligning the button infos makes it more appealing, imo
 	// also, we center Y, roughly
 	consoleSelect(&bottomScreen);
@@ -118,12 +119,12 @@ int main(int argc, char **argv)
 	printf("%s\n", HELP_START);
 
 
-	/* 6. fill top display with initial entry */
+	/* 5. fill top display with initial entry */
 	consoleSelect(&topScreen);
 	printZitat(ZitatList, &topScreen);
 
 
-	/* 7. enter key-getting loop */
+	/* 6. enter key-getting loop */
 	uint32_t keys;
 	ZitatespuckerZitat *cur = ZitatList;
 	while (true) {
@@ -149,7 +150,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	/* 8. cleanup */
+	/* 7. cleanup */
 	ZitatespuckerZitatFree(ZitatList);
 
 	consoleSelect(&bottomScreen);
