@@ -203,21 +203,7 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry, int *cursorY)
 	}
 
 	if (commentvalid) {
-		size_t commentlen = strlen(ZitatEntry->comment);
-		if (commentlen > 32) {
-			char *cur = ZitatEntry->comment;
-			do {
-				printf("%.32s\n", cur);
-				cur += 32;
-			} while ((commentlen = strlen(cur)) > 32);
-			if (commentlen > 0) {
-				printf("\x1b[%d;%dH", *cursorY, centerpos(32, commentlen));
-				printf("%s", cur);
-			}
-		} else {
-			printf("\x1b[%d;%dH", *cursorY, centerpos(32, commentlen));
-			printf("%s", ZitatEntry->comment);
-		}
+		printCenteredLines(ZitatEntry->comment, cursorY);
 	}
 	printf("\n\n");
 
