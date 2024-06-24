@@ -178,22 +178,23 @@ static inline void waitforstartexit(int retcode)
 static void printZitat(ZitatespuckerZitat *ZitatEntry, PrintConsole *curConsole)
 {
 	// TODO:
-	// NULL-check both zitat and author
 	// center zitat
-	// fix centering issues on comment
 	
 	uint8_t pstart;
 	
-	printf("%s\n\n", ZitatEntry->zitat);
+	if (ZitatEntry->zitat != NULL)
+		printf("%s\n\n", ZitatEntry->zitat);
 	bool yearvalid = ((ZitatEntry->year != 0 || ZitatEntry->annodomini == true));
 	bool commentvalid = (ZitatEntry->comment != NULL);
 	bool setcomma = (yearvalid || commentvalid);
 	
-	pstart = centerpos(32, strlen(ZitatEntry->author) + setcomma);
-	if (pstart < 0) { pstart = 0; }
-	// Set cursor coordinates: [y;xH
-    printf("\x1b[%d;%dH", curConsole->cursorY, pstart);
-	printf("%s%s\n", ZitatEntry->author, (setcomma ? "," : ""));
+	if (ZitatEntry->author != NULL) {
+		pstart = centerpos(32, strlen(ZitatEntry->author) + setcomma);
+		if (pstart < 0) { pstart = 0; }
+		// Set cursor coordinates: [y;xH
+    	printf("\x1b[%d;%dH", curConsole->cursorY, pstart);
+		printf("%s%s\n", ZitatEntry->author, (setcomma ? "," : ""));
+	}
 
 	if (commentvalid) {
 		size_t commentlen = strlen(ZitatEntry->comment);
