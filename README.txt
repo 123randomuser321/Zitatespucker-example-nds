@@ -24,8 +24,9 @@ There are a lot.
 Either I did not comprehend it well, or the NDS console output only understands ASCII.
 So, go set up your 'zitate.json' accordingly.
 
-This frontend also does not automatically truncate anything (aka is just keeps printing in the next line),
-so bear that in mind, too.
+If 'zitat' contains any line longer than 32 characters (DS screen x width),
+it will automatically be split across multiple line.
+Manually placing "\n" somewhere within a string can be used to control this behavior.
 
 The 'author' string is not expected to be more than 32 characters long (31 if 'comment' exists).
 
