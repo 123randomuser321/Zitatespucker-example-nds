@@ -60,7 +60,7 @@ static inline void waitforstartexit(int retcode);
 
 static void printZitat(ZitatespuckerZitat *ZitatEntry, int *cursorY);
 
-static size_t strlentilnew(char *str);
+//static size_t strlentilnew(char *str);
 
 static size_t strlentilnewlim(char *str, size_t lim);
 
@@ -241,6 +241,7 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry, int *cursorY)
 	}
 }
 
+/*
 static size_t strlentilnew(char *str)
 {
 	size_t ret = 0;
@@ -252,6 +253,7 @@ static size_t strlentilnew(char *str)
 
 	return ret;
 }
+*/
 
 static size_t strlentilnewlim(char *str, size_t lim)
 {
