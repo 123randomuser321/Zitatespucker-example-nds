@@ -36,3 +36,12 @@ The filename to look up is hardcoded, but you probably expected that (hint: 'zit
 ## other notes
 
 The file 'logo.xcf' is for GIMP. It doesn't really serve any purpose, but exists for posterity.
+
+If the zitate.json within NitroFS reaches a size I have yet to determine, funny things happen:
+DSi: When launched using TWiLightMenu, the ROM hangs after advancing to a certain entry (in my case number 16) and pressing START (to quit)
+3DS: When launched using a DSTT (with YSMenu), the chdir() call to "nitro:/Zitatespucker" fails
+3DS: When launched using an R4, the ROM gets stuck on the same entry as on the DSi case, but doesn't hang when pressing START (??????)
+3DS: When launched using TWiLightMenu, everything works fine.
+melonDS: Everything works fine (both DS and DSi mode; DSi even utilizes the firmware of the aforementioned DSi)
+
+This problem seems incomprehensible to me, if I am being completely honest.
