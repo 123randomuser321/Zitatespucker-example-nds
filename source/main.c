@@ -25,6 +25,7 @@
 #define HELP_RIGHT		"> --> next Zitat"
 #define HELP_LEFT		"< --> previous Zitat"
 #define HELP_START		"START --> Exit"
+#define MAX_X			32
 
 
 /* macros */
@@ -120,7 +121,7 @@ int main(int argc, char **argv)
 	// aligning the button infos makes it more appealing, imo
 	// also, we center Y, roughly
 	consoleSelect(&bottomScreen);
-	uint8_t pstart = centerpos(32, strlen(HELP_LEFT));
+	uint8_t pstart = centerpos(MAX_X, strlen(HELP_LEFT));
 	printf("\x1b[%d;%dH", 10, pstart);
 	printf("%s\n", HELP_RIGHT);
 	printf("\x1b[%d;%dH", bottomScreen.cursorY, pstart);
@@ -202,7 +203,7 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry, int *cursorY)
 	bool setcomma = (yearvalid || commentvalid);
 	
 	if (ZitatEntry->author != NULL) {
-		pstart = centerpos(32, strlen(ZitatEntry->author) + setcomma);
+		pstart = centerpos(MAX_X, strlen(ZitatEntry->author) + setcomma);
 		if (pstart < 0) { pstart = 0; }
     	printf("\x1b[%d;%dH", *cursorY, pstart);
 		printf("%s%s\n", ZitatEntry->author, (setcomma ? "," : ""));
@@ -231,7 +232,7 @@ static void printZitat(ZitatespuckerZitat *ZitatEntry, int *cursorY)
 			}
 		}
 
-		printf("\x1b[%d;%dH", *cursorY, centerpos(32, datelen));
+		printf("\x1b[%d;%dH", *cursorY, centerpos(MAX_X, datelen));
 
 		if (dayvalid)
 			printf("%s%d.", (ZitatEntry->day > 9 ? "" : "0"), ZitatEntry->day);
@@ -279,12 +280,12 @@ static size_t strlentilnewlim(char *str, size_t lim)
 static void printCenteredLines(char *str, int *cursorY)
 {
 	char *cur = str;
-	size_t tilnew = strlentilnewlim(cur, 32);
-	if (tilnew > 32)
-		tilnew = 32;
+	size_t tilnew = strlentilnewlim(cur, MAX_X);
+	if (tilnew > MAX_X)
+		tilnew = MAX_X;
 
 	for (int i = *cursorY; *cur != '\0'; i++) {
-		printf("\x1b[%d;%dH", i, centerpos(32, tilnew));
+		printf("\x1b[%d;%dH", i, centerpos(MAX_X, tilnew));
 		fwrite(cur, sizeof(char), tilnew, stdout);
 		cur += tilnew;
 		if (*cur == '\0')
@@ -292,9 +293,9 @@ static void printCenteredLines(char *str, int *cursorY)
 		else {
 			if (*cur == '\n')
 				cur++;
-			tilnew = strlentilnewlim(cur, 32);
-			if (tilnew > 32)
-				tilnew = 32;
+			tilnew = strlentilnewlim(cur, MAX_X);
+			if (tilnew > MAX_X)
+				tilnew = MAX_X;
 		}
 	}
 }
