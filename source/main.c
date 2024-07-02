@@ -44,6 +44,10 @@
 #include <filesystem.h>
 
 
+/* Standard headers */
+#include <ctype.h>
+
+
 /* Libraries */
 #define ZITATESPUCKER_JSON
 #include <Zitatespucker/Zitatespucker.h>
@@ -57,6 +61,8 @@ static inline void waitforstartexit(int retcode);
 static void printZitat(ZitatespuckerZitat *ZitatEntry, int *cursorY);
 
 static size_t strlentilnew(char *str);
+
+static size_t strlentilnewlim(char *str, size_t lim);
 
 static void printCenteredLines(char *str, int *cursorY);
 
@@ -242,6 +248,27 @@ static size_t strlentilnew(char *str)
 	while (*str != '\n' && *str != '\0') {
 		str++;
 		ret++;
+	}
+
+	return ret;
+}
+
+static size_t strlentilnewlim(char *str, size_t lim)
+{
+	size_t ret = 0;
+
+	while (*str != '\n' && *str != '\0' && ret < lim) {
+		str++;
+		ret++;
+	}
+
+	if (*str != '\n' && *str != '\0') {
+		while (!isblank(*str) && ret > 0) {
+			str--;
+			ret--;
+		}
+		if (ret == 0)
+			ret = lim;
 	}
 
 	return ret;
