@@ -277,7 +277,7 @@ static size_t strlentilnewlim(char *str, size_t lim)
 static void printCenteredLines(char *str, int *cursorY)
 {
 	char *cur = str;
-	size_t tilnew = strlentilnew(cur);
+	size_t tilnew = strlentilnewlim(cur, 32);
 	if (tilnew > 32)
 		tilnew = 32;
 
@@ -290,7 +290,7 @@ static void printCenteredLines(char *str, int *cursorY)
 		else {
 			if (*cur == '\n')
 				cur++;
-			tilnew = strlentilnew(cur);
+			tilnew = strlentilnewlim(cur, 32);
 			if (tilnew > 32)
 				tilnew = 32;
 		}
