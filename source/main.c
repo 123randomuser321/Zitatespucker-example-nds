@@ -86,6 +86,10 @@ int main(int argc, char **argv)
 
 	consoleSelect(&topScreen);
 
+
+	/* 0.5 What mode are we in? (purely diagnostic) */
+	printf("Mode: %s\n\n", (isDSiMode() ? "DSi (TWL)" : "DS (NTR)"));
+
 	
 	/* 1. init nitrofs */
 	if (!nitroFSInit(NULL)) {
