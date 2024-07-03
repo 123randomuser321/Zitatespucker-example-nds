@@ -24,6 +24,8 @@
 #define FILENAME_JSON	"zitate.json"
 #define HELP_RIGHT		"> --> next Zitat"
 #define HELP_LEFT		"< --> previous Zitat"
+#define HELP_L			"L --> first Zitat"
+#define HELP_R			"R --> last Zitat"
 #define HELP_START		"START --> Exit"
 #define MAX_X			32
 
@@ -148,10 +150,14 @@ int main(int argc, char **argv)
 	// also, we center Y, roughly
 	consoleSelect(&bottomScreen);
 	uint8_t pstart = centerpos(MAX_X, strlen(HELP_LEFT));
-	printf("\x1b[%d;%dH", 10, pstart);
+	printf("\x1b[%d;%dH", 8, pstart);
 	printf("%s\n", HELP_RIGHT);
 	printf("\x1b[%d;%dH", bottomScreen.cursorY, pstart);
 	printf("%s\n", HELP_LEFT);
+	printf("\x1b[%d;%dH", bottomScreen.cursorY + 1, pstart);
+	printf("%s\n", HELP_L);
+	printf("\x1b[%d;%dH", bottomScreen.cursorY, pstart);
+	printf("%s\n", HELP_R);
 	printf("\x1b[%d;%dH", bottomScreen.cursorY + 1, pstart);
 	printf("%s\n", HELP_START);
 
@@ -184,6 +190,16 @@ int main(int argc, char **argv)
 				consoleClear();
 				printZitat(cur, &(topScreen.cursorY));
 			}
+		} else if (keys & KEY_L) {
+			while (cur->prevZitat != NULL)
+				cur = cur->prevZitat;
+			consoleClear();
+			printZitat(cur, &(topScreen.cursorY));
+		} else if (keys & KEY_R) {
+			while (cur->nextZitat != NULL)
+				cur = cur->nextZitat;
+			consoleClear();
+			printZitat(cur, &(topScreen.cursorY));
 		}
 	}
 
