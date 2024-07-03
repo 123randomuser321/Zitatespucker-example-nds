@@ -25,14 +25,18 @@ GAME_AUTHOR	:= 123randomuser321
 GAME_ICON	:= logo.bmp
 
 # Source code paths
-NITROFSDIR	:= nitrofs
+ifneq ($(DSIWARE),)
+	DSIWAREDEF = -D DSIWARE=1
+else
+	NITROFSDIR	:= nitrofs
+endif
 
 # defines
 ifneq ($(DEBUG),)
 	DEBUGDEF = -D DEBUG=1
 endif
 # no float conversion for printf, we don't use it
-DEFINES	:= -D PICOLIBC_LONG_LONG_PRINTF_SCANF $(DEBUGDEF)
+DEFINES	:= -D PICOLIBC_LONG_LONG_PRINTF_SCANF $(DEBUGDEF) $(DSIWAREDEF)
 
 # Libraries
 LIBS	:= -lnds9 -ljansson -lZitatespucker
