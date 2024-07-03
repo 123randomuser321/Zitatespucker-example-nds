@@ -42,6 +42,7 @@ DSi: When launched using TWiLightMenu, the ROM hangs after advancing to a certai
 3DS: When launched using a DSTT (with YSMenu), the chdir() call to "nitro:/Zitatespucker" fails
 3DS: When launched using an R4, the ROM gets stuck on the same entry as on the DSi case, but doesn't hang when pressing START (??????)
 3DS: When launched using TWiLightMenu, everything works fine.
-melonDS: Everything works fine (both DS and DSi mode; DSi even utilizes the firmware of the aforementioned DSi)
+melonDS: Everything works fine (both DS and DSi mode; DSi mode even utilizes the firmware of the aforementioned DSi)
+DSi: when installed as DSiWare and reading the JSON from SDCard, everything works find.
 
 This problem seems incomprehensible to me, if I am being completely honest.
