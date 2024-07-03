@@ -133,8 +133,9 @@ int main(int argc, char **argv)
 	if (ZitatList == NULL) {
 		printf("Zitatespucker:\nGot a NULL pointer,\nmissing file?\n");
 		waitforstartexit(3);
-	} else
-		printf("Zitatespucker:\nGot a valid pointer.\n\n");
+	} else {
+		printf("Zitatespucker:\nGot a valid pointer.\nList contains %d entries.\n", ZitatespuckerZitatListLen(ZitatList));
+	}
 	
 	#ifdef DEBUG
 	waitforstart();
