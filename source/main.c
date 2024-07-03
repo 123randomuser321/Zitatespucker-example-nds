@@ -42,7 +42,11 @@
 #define ARM9
 #endif
 #include <nds.h>
+#ifdef DSIWARE
+#include <fat.h>
+#else
 #include <filesystem.h>
+#endif
 
 
 /* Standard headers */
@@ -91,6 +95,22 @@ int main(int argc, char **argv)
 	printf("Mode: %s\n\n", (isDSiMode() ? "DSi (TWL)" : "DS (NTR)"));
 
 	
+	#ifdef DSIWARE
+	/* 1. init SDCard */
+	if (!fatInitDefault()) {
+		printf("FAT:\nFailed to init!\n");
+		waitforstartexit(1);
+	} else
+		printf("FAT:\nInit succeeded.\n\n");
+	
+
+	/* 2. Chango to Zitatespucker dir */
+	if (chdir("sd:/Zitatespucker") != 0) {
+		printf("FAT:\nCouldn't chdir into Zitatespucker,\nmissing directory?\n");
+		waitforstartexit(2);
+	} else
+		printf("FAT:\nchdir into Zitatespucker.\n\n");
+	#else
 	/* 1. init nitrofs */
 	if (!nitroFSInit(NULL)) {
 		printf("NitroFS:\nFailed to init!\n");
@@ -105,6 +125,7 @@ int main(int argc, char **argv)
 		waitforstartexit(2);
 	} else
 		printf("NitroFS:\nchdir into Zitatespucker.\n\n");
+	#endif
 	
 
 	/* 3. Get the Zitat */
