@@ -27,7 +27,10 @@
 #define HELP_L			"L --> first Zitat"
 #define HELP_R			"R --> last Zitat"
 #define HELP_START		"START --> Exit"
+// five lines of help, + 2 lines of spacing
+#define HELP_NUM		(5 + 2)
 #define MAX_X			32
+#define MAX_Y			24
 
 
 /* macros */
@@ -176,7 +179,8 @@ int main(int argc, char **argv)
 	// also, we center Y, roughly
 	consoleSelect(&bottomScreen);
 	uint8_t pstart = centerpos(MAX_X, strlen(HELP_LEFT));
-	printf("\x1b[%d;%dH", 8, pstart);
+	// turns out, centerpos() can be used vertically, too
+	printf("\x1b[%d;%dH", centerpos(MAX_Y, HELP_NUM), pstart);
 	printf("%s\n", HELP_RIGHT);
 	printf("\x1b[%d;%dH", bottomScreen.cursorY, pstart);
 	printf("%s\n", HELP_LEFT);
