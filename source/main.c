@@ -61,16 +61,42 @@
 
 
 /* static function declarations */
+
+/*
+	Wait until the user presses KEY_START, then return.
+*/
 static inline void waitforstart(void);
 
+/*
+	Wait until the user presses KEY_START, then call exit(retcode).
+*/
 static inline void waitforstartexit(int retcode);
 
+/*
+	print ZitatEntry onto the current Console.
+	cursorY is a pointer to the cursorY member of the current Console and is used for positioning.
+*/
 static void printZitat(ZitatespuckerZitat *ZitatEntry, int *cursorY);
 
+/*
+	Get the number of characters (including starting position) until, but not including, the next newline or NULL terminator.
+*/
 //static size_t strlentilnew(char *str);
 
+/*
+	Get the number of characters (including starting position) until, but not including, the first newline or NULL terminator,
+	within lim characters.
+
+	If no such character is found, the string is read backwards from lim until a blank space (isblank()) is found.
+	If no such space exists, lim is returned.
+*/
 static size_t strlentilnewlim(char *str, size_t lim);
 
+/*
+	Prints str within the current Console, with each line centered.
+
+	cursorY is a pointer to the cursorY member of the current Console and is used for positioning.
+*/
 static void printCenteredLines(char *str, int *cursorY);
 
 
