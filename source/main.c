@@ -26,11 +26,12 @@
 #endif
 #define HELP_RIGHT		"> --> next Zitat"
 #define HELP_LEFT		"< --> previous Zitat"
+#define HELP_X			"X --> random Zitat"
 #define HELP_L			"L --> first Zitat"
 #define HELP_R			"R --> last Zitat"
 #define HELP_START		"START --> Exit"
-// five lines of help, + 2 lines of spacing
-#define HELP_NUM		(5 + 2)
+// six lines of help, + 2 lines of spacing
+#define HELP_NUM		(6 + 2)
 #define MAX_X			32
 #define MAX_Y			24
 
@@ -58,6 +59,7 @@
 
 /* Standard headers */
 #include <ctype.h>
+#include <time.h>
 
 
 /* Libraries */
@@ -103,6 +105,11 @@ static size_t strlentilnewlim(char *str, size_t lim);
 	cursorY is a pointer to the cursorY member of the current Console and is used for positioning.
 */
 static void printCenteredLines(char *str, int *cursorY);
+
+/*
+	return a simple dumb random
+*/
+static int simpleDumbRandom(void);
 
 
 int main(int argc, char **argv)
@@ -186,6 +193,8 @@ int main(int argc, char **argv)
 	printf("%s\n", HELP_RIGHT);
 	printf("\x1b[%d;%dH", bottomScreen.cursorY, pstart);
 	printf("%s\n", HELP_LEFT);
+	printf("\x1b[%d;%dH", bottomScreen.cursorY, pstart);
+	printf("%s\n", HELP_X);
 	printf("\x1b[%d;%dH", bottomScreen.cursorY + 1, pstart);
 	printf("%s\n", HELP_L);
 	printf("\x1b[%d;%dH", bottomScreen.cursorY, pstart);
@@ -201,6 +210,8 @@ int main(int argc, char **argv)
 
 	/* 6. enter key-getting loop */
 	uint32_t keys;
+	int ran;
+	const size_t ZitatListLen = ZitatespuckerZitatListLen(ZitatList);
 	ZitatespuckerZitat *cur = ZitatList;
 	while (true) {
 		swiWaitForVBlank();
@@ -222,6 +233,14 @@ int main(int argc, char **argv)
 				consoleClear();
 				printZitat(cur, &(topScreen.cursorY));
 			}
+		} else if (keys & KEY_X) {
+			ran = simpleDumbRandom();
+			ran = ran % ZitatListLen;
+			cur = ZitatList;
+			for (int i = 0; i < ran; i++)
+				cur = cur->nextZitat;
+			consoleClear();
+			printZitat(cur, &(topScreen.cursorY));
 		} else if (keys & KEY_L) {
 			while (cur->prevZitat != NULL)
 				cur = cur->prevZitat;
@@ -372,4 +391,16 @@ static void printCenteredLines(char *str, int *cursorY)
 				tilnew = MAX_X;
 		}
 	}
+}
+
+static int simpleDumbRandom(void)
+{
+	static unsigned int seed;
+
+	seed += (unsigned int) time(NULL); // this may overflow
+	srand(seed);
+	int ret = rand();
+	seed += ret;
+
+	return ret;
 }
