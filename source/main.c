@@ -21,7 +21,9 @@
 
 
 /* definitions */
-#define FILENAME_JSON	"zitate.json"
+#ifndef FILENAME_JSON
+#define FILENAME_JSON	"zitate_nds.json"
+#endif
 #define HELP_RIGHT		"> --> next Zitat"
 #define HELP_LEFT		"< --> previous Zitat"
 #define HELP_L			"L --> first Zitat"
