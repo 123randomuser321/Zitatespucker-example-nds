@@ -1,4 +1,4 @@
 .vscode/
-nitrofs/Zitatespucker/zitate.json
+nitrofs/Zitatespucker/*.json
 build/
 *.nds
