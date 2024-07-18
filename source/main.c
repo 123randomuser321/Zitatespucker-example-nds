@@ -205,7 +205,8 @@ int main(int argc, char **argv)
 
 	/* 5. fill top display with initial entry */
 	consoleSelect(&topScreen);
-	printZitat(ZitatList, &(topScreen.cursorY));
+	int *cursorY = &(topScreen.cursorY);
+	printZitat(ZitatList, cursorY);
 
 
 	/* 6. enter key-getting loop */
@@ -225,13 +226,13 @@ int main(int argc, char **argv)
 			if (cur->prevZitat != NULL) {
 				cur = cur->prevZitat;
 				consoleClear();
-				printZitat(cur, &(topScreen.cursorY));
+				printZitat(cur, cursorY);
 			}
 		} else if (keys & KEY_RIGHT) {
 			if (cur->nextZitat != NULL) {
 				cur = cur->nextZitat;
 				consoleClear();
-				printZitat(cur, &(topScreen.cursorY));
+				printZitat(cur, cursorY);
 			}
 		} else if (keys & KEY_X) {
 			ran = simpleDumbRandom();
@@ -240,17 +241,17 @@ int main(int argc, char **argv)
 			for (int i = 0; i < ran; i++)
 				cur = cur->nextZitat;
 			consoleClear();
-			printZitat(cur, &(topScreen.cursorY));
+			printZitat(cur, cursorY);
 		} else if (keys & KEY_L) {
 			while (cur->prevZitat != NULL)
 				cur = cur->prevZitat;
 			consoleClear();
-			printZitat(cur, &(topScreen.cursorY));
+			printZitat(cur, cursorY);
 		} else if (keys & KEY_R) {
 			while (cur->nextZitat != NULL)
 				cur = cur->nextZitat;
 			consoleClear();
-			printZitat(cur, &(topScreen.cursorY));
+			printZitat(cur, cursorY);
 		}
 	}
 
